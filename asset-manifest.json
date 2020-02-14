@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/gshoanganh/edu-ht/static/css/main.d1b05096.chunk.css",
-    "main.js": "/gshoanganh/edu-ht/static/js/main.d1d37b6b.chunk.js",
-    "main.js.map": "/gshoanganh/edu-ht/static/js/main.d1d37b6b.chunk.js.map",
-    "runtime-main.js": "/gshoanganh/edu-ht/static/js/runtime-main.06327655.js",
-    "runtime-main.js.map": "/gshoanganh/edu-ht/static/js/runtime-main.06327655.js.map",
-    "static/js/2.6ca2016c.chunk.js": "/gshoanganh/edu-ht/static/js/2.6ca2016c.chunk.js",
-    "static/js/2.6ca2016c.chunk.js.map": "/gshoanganh/edu-ht/static/js/2.6ca2016c.chunk.js.map",
-    "index.html": "/gshoanganh/edu-ht/index.html",
-    "precache-manifest.d220b2eeec5924f6a4ec35dcd8f9c241.js": "/gshoanganh/edu-ht/precache-manifest.d220b2eeec5924f6a4ec35dcd8f9c241.js",
-    "service-worker.js": "/gshoanganh/edu-ht/service-worker.js",
-    "static/css/main.d1b05096.chunk.css.map": "/gshoanganh/edu-ht/static/css/main.d1b05096.chunk.css.map",
-    "static/js/2.6ca2016c.chunk.js.LICENSE.txt": "/gshoanganh/edu-ht/static/js/2.6ca2016c.chunk.js.LICENSE.txt",
-    "static/media/logo.svg": "/gshoanganh/edu-ht/static/media/logo.5d5d9eef.svg"
+    "main.css": "/edu-ht/static/css/main.d1b05096.chunk.css",
+    "main.js": "/edu-ht/static/js/main.92696788.chunk.js",
+    "main.js.map": "/edu-ht/static/js/main.92696788.chunk.js.map",
+    "runtime-main.js": "/edu-ht/static/js/runtime-main.6936c9a1.js",
+    "runtime-main.js.map": "/edu-ht/static/js/runtime-main.6936c9a1.js.map",
+    "static/js/2.6ca2016c.chunk.js": "/edu-ht/static/js/2.6ca2016c.chunk.js",
+    "static/js/2.6ca2016c.chunk.js.map": "/edu-ht/static/js/2.6ca2016c.chunk.js.map",
+    "index.html": "/edu-ht/index.html",
+    "precache-manifest.5df328f9490d98a5483189acb4a56814.js": "/edu-ht/precache-manifest.5df328f9490d98a5483189acb4a56814.js",
+    "service-worker.js": "/edu-ht/service-worker.js",
+    "static/css/main.d1b05096.chunk.css.map": "/edu-ht/static/css/main.d1b05096.chunk.css.map",
+    "static/js/2.6ca2016c.chunk.js.LICENSE.txt": "/edu-ht/static/js/2.6ca2016c.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/edu-ht/static/media/logo.5d5d9eef.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.06327655.js",
+    "static/js/runtime-main.6936c9a1.js",
     "static/js/2.6ca2016c.chunk.js",
     "static/css/main.d1b05096.chunk.css",
-    "static/js/main.d1d37b6b.chunk.js"
+    "static/js/main.92696788.chunk.js"
   ]
 }
