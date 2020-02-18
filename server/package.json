@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ththth0303/server-chat.git"
+    "url": "git+https://github.com/gshoanganh/edu-ht-server.git"
   },
-  "author": "thangnt",
+  "author": "gshoanganh",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ththth0303/server-chat/issues"
+    "url": "https://github.com/gshoanganh/edu-ht-server.git/issues"
   },
-  "homepage": "https://github.com/ththth0303/server-chat#readme",
+  "homepage": "https://github.com/gshoanganh/edu-ht-server.git#readme",
   "dependencies": {
     "ejs": "^2.5.7",
     "express": "^4.15.4",

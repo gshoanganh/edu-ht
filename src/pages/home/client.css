@@ -133,7 +133,7 @@
   width: 95%;
   margin: auto;
   /* border:1px solid red; */
-} 
+}
 
 .choices_group {
   width: 55%;
@@ -143,11 +143,10 @@
 }
 
 .questions .answers {
-    width: 40%;
-    /* border:1px solid red; */
-    float: right;
-  }
-  
+  width: 40%;
+  /* border:1px solid red; */
+  float: right;
+}
 
 .d-cricle {
   width: 35px;
@@ -182,9 +181,14 @@
 .menu_top span {
   padding: 10px;
 }
-
+.student-main {
+  width: 70%;
+  background-color: #fff;
+  margin: auto;
+  padding: 10px;
+}
 .student {
-    position: relative;
+  position: relative;
   width: 90%;
   margin: auto;
   margin-left: 38px;
@@ -193,8 +197,8 @@
   overflow: auto;
   /* border: 1px solid grey; */
 }
-.nav-item{
-    font-size: 12px;
+.nav-item {
+  font-size: 12px;
 }
 .student table {
   border: none;
@@ -222,59 +226,64 @@
   width: 20px;
   height: 20px;
   padding: 1px 2px;
-  border-radius: 35px; 
+  border-radius: 35px;
   /* line-height: 1.33; */
   color: #134413;
   border: 1px solid #f5886e;
-  text-align: center; 
+  text-align: center;
 }
 
 .t-cricle-name {
-    /* width: 135px; */
-    width: 20px;
+  /* width: 135px; */
+  width: 20px;
   height: 20px;
-    border-radius: 35px; 
-    /* line-height: 1.33; */
-    color: #134413;
-    border: 1px solid #f5886e;
-    text-align: center;
-    margin-right: 10px;
-  }
-
+  border-radius: 35px;
+  /* line-height: 1.33; */
+  color: #134413;
+  border: 1px solid #f5886e;
+  text-align: center;
+  margin-right: 10px;
+}
 
 /*nút gửi đi */
 
 .bottom_sent {
-    position: relative;
-    width: 100%; 
-    padding-top: 50px; 
-    padding-left:0px; 
-    text-align: center; 
-  } 
+  position: relative;
+  width: 100%;
+  padding-top: 50px;
+  padding-left: 0px;
+  text-align: center;
+}
 
-  .bottom_sent .send_message {
-    width: 140px;
-    height: 50px;
-    display: inline-block;
-    border-radius: 50px;
-    background-color: #a3d063;
-    border: 2px solid #a3d063;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.2s linear;
-    text-align: center; 
-  }
-  .bottom_sent .send_message:hover {
-    color: #a3d063;
-    background-color: #fff;
-  }
-  .bottom_sent .send_message .text {
-    font-size: 18px;
-    font-weight: 300;
-    display: inline-block;
-    line-height: 48px;
-  }
-  
+.bottom_sent .send_message {
+  width: 140px;
+  height: 50px;
+  display: inline-block;
+  border-radius: 50px;
+  background-color: #a3d063;
+  border: 2px solid #a3d063;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s linear;
+  text-align: center;
+}
+.bottom_sent .send_message:hover {
+  color: #a3d063;
+  background-color: #fff;
+}
+.bottom_sent .send_message .text {
+  font-size: 18px;
+  font-weight: 300;
+  display: inline-block;
+  line-height: 48px;
+}
+
+.timer {
+  margin-top: 20px;
+  font-size: 27px;
+  text-align: center;
+}
+
 .footer {
   position: fixed;
   bottom: 7px;

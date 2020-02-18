@@ -11,13 +11,13 @@ var port = (process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 6969);
 
 var io = socket.listen(server);
 server.listen(port, () => console.log('Server running in port ' + port));
- 
+
 
 var userOnline = []; //danh sách user dang online
-io.on('connection', function(socket) {
+io.on('connection', function (socket) {
     console.log(socket.id + ': connected');
     //lắng nghe khi người dùng thoát
-    socket.on('disconnect', function() {
+    socket.on('disconnect', function () {
         console.log(socket.id + ': disconnected')
         $index = _findIndex(userOnline, ['id', socket.id]);
         userOnline.splice($index, 1);
@@ -31,6 +31,21 @@ io.on('connection', function(socket) {
             user: data.user
         });
     })
+    //lắng nghe khi giáo viên đổi câu hỏi 
+    socket.on('teacherQuestion', data => {
+        //gửi lại tin nhắn cho tất cả các user dang online
+        io.sockets.emit('teacherQuestion', {
+            route: data.route
+        });
+    })
+    //lắng nghe khi giáo viên mở câu hỏi 
+    socket.on('openQuestion', data => {
+        //gửi lại tin nhắn cho tất cả các user dang online
+        io.sockets.emit('openQuestion', {
+            opens: data.opens
+        });
+    })
+
     //lắng nghe khi có người login
     socket.on('login', data => {
         // kiểm tra xem tên đã tồn tại hay chưa
@@ -50,5 +65,5 @@ io.on('connection', function(socket) {
 });
 
 app.get('/', (req, res) => {
-    res.send("Home page. Server running okay.");
+    res.send("Home page. Server running okay. (port: " + port + ")");
 })
