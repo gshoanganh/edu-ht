@@ -233,8 +233,7 @@ export default class App extends React.Component {
       "timeout": 10000,                  //before connect_error and connect_timeout are emitted.
       "transports": ["websocket"]
     };
-    //this.socket = io('localhost:6969', connectionOptions);
-    this.socket = io('https://gshoanganh.github.io/edu-ht/', connectionOptions);
+    this.socket = io('https://polar-falls-90130.herokuapp.com/', connectionOptions);
     // this.socket.on('connect', function () {
     //   console.log('connected!');
     //   this.socket.emit('greet', { message: 'Hello Mr.Server!' });
