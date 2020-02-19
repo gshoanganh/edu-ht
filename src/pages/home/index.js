@@ -373,7 +373,7 @@ export default class App extends React.Component {
     }
     console.log('danh sach: ', list, this.state)
     return <div className="student">
-      <div className="row">Đã tham gia: {this.getTab() === 2 ?
+      <div className="row">{this.getTab()==0?"Đã tham gia:":"Trả lời đúng: "} {this.getTab() === 2 ?
         this.state.userOnline.length : ((list) ? list.length : 0)}
         {this.getTab() == 2 && <button onClick={() => this.refreshList()}>Refresh</button>}</div>
       <table>
@@ -424,7 +424,7 @@ export default class App extends React.Component {
             (this.getTab() === 1 && listIncorrect && listIncorrect.length > 0) && (
               listIncorrect.map((item, index) => {
                 return (<tr key={index}>
-                  <td className="w-20"><div className="t-cricle">{index + 1}</div></td>
+                  <td className="w-20"> </td>
                   <td><div className="t-cricle-name1 ml-2">{item.userName}</div></td>
 
                   <React.Fragment>
