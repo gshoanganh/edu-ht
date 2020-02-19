@@ -1,3 +1,7 @@
+.w-20{
+  width: 20px;
+}
+
 .questions {
   position: relative;
   list-style: none;
@@ -182,7 +186,7 @@
   padding: 10px;
 }
 .student-main {
-  width: 70%;
+  width: 98%;
   background-color: #fff;
   margin: auto;
   padding: 10px;
