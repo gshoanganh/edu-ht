@@ -1,6 +1,15 @@
 .w-20{
   width: 20px;
 }
+.count-down{
+  color:#000;
+  font-size: 29px;
+  border:1px solid grey;
+  width:100px;
+  background-color:#fff;
+  position: fixed;
+  left:30px;
+}
 
 .questions {
   position: relative;

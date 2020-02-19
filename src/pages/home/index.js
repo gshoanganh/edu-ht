@@ -20,9 +20,12 @@ import '../admin/login.css';
 import Teacher from '../../asset/photo/teacher01.png';
 import Answer01 from '../../asset/photo/answer01.png';
 
+import Timer from './timer';
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    this.defaultSeconds = 10;
     //Khởi tạo state,
     this.state = {
       messages: [], // danh sách tin nhắn
@@ -31,13 +34,11 @@ export default class App extends React.Component {
       route: 0,
       opens: [],//[{ route: 0, tab:0, timeStart: '', value: false, answers: [] }], //answers: câu trả lời 
       //timer 
-      time: {}, seconds: 5
+      timer: 5
     }
     this.socket = null;
     //Timer  
     this.timer = 0;
-    this.startTimer = this.startTimer.bind(this);
-    this.countDown = this.countDown.bind(this);
 
   }
 
@@ -48,8 +49,8 @@ export default class App extends React.Component {
 
   //Mở câu hỏi 
   setOpen = (index) => {
-    //start timer 
-    this.startTimer()
+    //start timer  
+
     //open question 
     var opens = this.state.opens;
     var findIndex = opens.findIndex(t => t.route === index);
@@ -72,7 +73,7 @@ export default class App extends React.Component {
       }];
     }
 
-    this.setState({ ...this.state, opens });
+    this.setState({ ...this.state, opens, time: {}, seconds: this.defaultSeconds });
     console.log('opens: ', opens)
     this.socket.emit("openQuestion", { opens: opens }); //gửi event về server
   }
@@ -199,28 +200,9 @@ export default class App extends React.Component {
     };
     return obj;
   }
-  startTimer() {
-    if (this.timer == 0 && this.state.seconds > 0) {
-      this.timer = setInterval(this.countDown, 1000);
-    }
-  }
 
-  countDown() {
-    // Remove one second, set state so a re-render happens.
-    let seconds = this.state.seconds - 1;
-    this.setState({
-      time: this.secondsToTime(seconds),
-      seconds: seconds,
-    });
-
-    // Check if we're at zero.
-    if (seconds == 0) {
-      clearInterval(this.timer);
-    }
-  }
   componentDidMount() {
-    let timeLeftVar = this.secondsToTime(this.state.seconds);
-    this.setState({ time: timeLeftVar });
+
   }
 
   //Connetct với server nodejs, thông qua socket.io
@@ -245,16 +227,21 @@ export default class App extends React.Component {
 
     this.socket.on('newMessage', (response) => { this.newMessage(response) }); //lắng nghe khi có tin nhắn mới
     this.socket.on('loginFail', (response) => { alert('Tên đã có người sử dụng') }); //login fail
-    this.socket.on('loginSuccess', (response) => { this.setValue({ user: { id: this.socket.id, name: response.user, code: response.code, time: this.getHourMinute() } }) }); //đăng nhập thành công 
+    this.socket.on('loginSuccess', (response) => {
+      this.setValue({ user: { id: this.socket.id, name: response.user, code: response.code, time: this.getHourMinute() } })
+      if (response.user === "Admin" || response.user === "admin") { //chỉ có Giáo viên đăng nhập mới load lại câu hỏi.
+        this.setRating(0)
+      }
+    }); //đăng nhập thành công 
     this.socket.on('updateUesrList', (response) => { this.setValue({ userOnline: response }) }); //update lại danh sách người dùng online khi có người đăng nhập hoặc đăng xuất
     this.socket.on('teacherQuestion', (response) => { this.setValue({ route: response.route }); });
     this.socket.on('openQuestion', (response) => { this.setValue({ opens: response.opens }); });
     //lam moi lai danh sach refreshList
-    this.socket.on('refreshList', (response) => { 
-      if(!(this.state.user.name==='Admin' || this.state.user.name==='admin')){
+    this.socket.on('refreshList', (response) => {
+      if (!(this.state.user.name === 'Admin' || this.state.user.name === 'admin')) {
         this.setValue({ user: null })
       }
-    });  
+    });
 
   }
   //Khi có tin nhắn mới, sẽ push tin nhắn vào state mesgages, và nó sẽ được render ra màn hình
@@ -324,7 +311,7 @@ export default class App extends React.Component {
     this.socket.emit("teacherQuestion", { ...data }); //gửi event về server
   }
 
-  refreshList = () =>{
+  refreshList = () => {
     this.socket.emit("refreshList", true); //Làm mới lại toàn bộ danh sách
   }
 
@@ -334,24 +321,22 @@ export default class App extends React.Component {
     console.log('this.state.user.name<: ', this.state.user)
     var isTeacher = this.state.user && this.state.user.name === 'Admin';
     return (
-      <div className="app__content"> 
-          {/* <div className="title_home"><h2>{`"Ngòi bút có uy lực hơn cả lưỡi gươm" - Edward Bulwer-Lytton`}</h2></div> */}
+      <div className="app__content">
+        {/* <div className="title_home"><h2>{`"Ngòi bút có uy lực hơn cả lưỡi gươm" - Edward Bulwer-Lytton`}</h2></div> */}
 
-          {/* kiểm tra xem user đã tồn tại hay chưa, nếu tồn tại thì render form chat, chưa thì render form login */}
-          {(this.state.user && this.state.user.id && this.state.user.name) ?
-            (
-              isTeacher ? this.renderTeacher() : this.renderStudent()
-            )
-            :
-            <div>
-              {this.renderLogin()}
-              {/* <div className="login_form">{/* form login 
+        {/* kiểm tra xem user đã tồn tại hay chưa, nếu tồn tại thì render form chat, chưa thì render form login */}
+        {(this.state.user && this.state.user.id && this.state.user.name) ?
+          (isTeacher ? this.renderTeacher() : this.renderStudent())
+          :
+          <div>
+            {this.renderLogin()}
+            {/* <div className="login_form">{/* form login 
               <input type="text" name="name" ref="name"></input>
               <input type="button" name="" value="Login" onClick={this.login.bind(this)}></input>
             </div> */}
-            </div>
+          </div>
 
-          } 
+        }
         <div className="footer">(c) Copyright Gs Hoang Anh - facebook.com/gs.anhhoang</div>
       </div>
     )
@@ -378,9 +363,19 @@ export default class App extends React.Component {
     }
     if (!opens)
       return null;
-    console.log('danh sach: ', this.state.opens, this.state)
+
+    var answer = questions[route].answer;
+    var list = opens.answers;
+    var listIncorrect = [];
+    if (this.getTab() === 1 && list && list.length > 0) {
+      list = list.filter(t => (answer - 1) === t.message);
+      listIncorrect = opens.answers.filter(t => (answer - 1) !== t.message);
+    }
+    console.log('danh sach: ', list, this.state)
     return <div className="student">
-    <div className="row">Đã tham gia: {this.getTab() == 2 ? this.state.userOnline.length : (opens.answers ? opens.answers.length : 0)} {this.getTab() == 2 && <button onClick={()=>this.refreshList()}>Refresh</button>}</div>
+      <div className="row">Đã tham gia: {this.getTab() === 2 ?
+        this.state.userOnline.length : ((list) ? list.length : 0)}
+        {this.getTab() == 2 && <button onClick={() => this.refreshList()}>Refresh</button>}</div>
       <table>
         {/* <thead>
           <tr>
@@ -391,7 +386,7 @@ export default class App extends React.Component {
           </tr>
         </thead> */}
         <tbody>
-          
+
           {(this.getTab() == 2) && this.state.userOnline.map((item, index) => {
             return (<tr key={index}>
               <td className="w-20"><div className="t-cricle">{index + 1}</div></td>
@@ -399,8 +394,8 @@ export default class App extends React.Component {
               <td><div className="t-cricle-other">{item.time && item.time.substring(0, 8)}</div></td>
             </tr>)
           })}
-          {(this.getTab() < 2 && opens.answers && opens.answers.length > 0) &&
-            opens.answers.map((item, index) => {
+          {(this.getTab() < 2 && list && list.length > 0) &&
+            list.map((item, index) => {
               console.log('item: ', item)
 
               let valuestart = moment.duration(opens.timeStart, "HH:mm:ss.SSSS");
@@ -416,7 +411,7 @@ export default class App extends React.Component {
                 {
                   this.getTab() === 1 && (
                     <React.Fragment>
-                      
+
                       <td><div className="t-cricle-other">{item.time}</div></td>
                       <td><div className="t-cricle-other font-weight-bold text-success">{this.getAnswers(item.message)}</div></td>
                     </React.Fragment>
@@ -425,6 +420,23 @@ export default class App extends React.Component {
                 <td><div className="t-cricle-other text-primary">{`${difference.minutes()}:${difference.seconds()}.${difference.milliseconds()}`}</div></td>
               </tr>)
             })}
+          {
+            (this.getTab() === 1 && listIncorrect && listIncorrect.length > 0) && (
+              listIncorrect.map((item, index) => {
+                return (<tr key={index}>
+                  <td className="w-20"><div className="t-cricle">{index + 1}</div></td>
+                  <td><div className="t-cricle-name1 ml-2">{item.userName}</div></td>
+
+                  <React.Fragment>
+                    <td> </td>
+                    <td><div className="t-cricle-other font-weight-bold text-success">{this.getAnswers(item.message)}</div></td>
+                  </React.Fragment>
+
+                  <td className="text-danger">SAI</td>
+                </tr>)
+              }
+              ))
+          }
         </tbody>
       </table>
       {/* {this.state.userOnline.map(item =>
@@ -463,48 +475,6 @@ export default class App extends React.Component {
       </div>
     </div>);
 
-    return (
-      <div className="login" >
-        <Alert show={true} variant="success">
-          <Alert.Heading>Đăng nhập</Alert.Heading>
-          <p className="text-center">
-            "Ngòi bút có uy lực hơn cả lưỡi gươm."
-      </p>
-          <p className="text-center">Edward Bulwer-Lytton</p>
-          <hr />
-          <div className="d-flex justify-content-end">
-            <div className="form">
-              <FormGroup controlId="name" bsSize="large">
-                <div>Họ và tên</div>
-                <FormControl
-                  autoFocus
-                  type="name"
-                  name={"name"}
-                  value={this.name}
-                  //onChange={e => setEmail(e.target.value)}
-                  ref={"name"}
-
-                />
-              </FormGroup>
-              <FormGroup controlId="password" bsSize="large">
-                <div>Mã bão mật (tự đặt)</div>
-                <FormControl
-                  value={this.password}
-                  // onChange={e => setPassword(e.target.value)}
-                  type="password"
-                  ref={refs => this.password = refs}
-                />
-              </FormGroup>
-              <Button onClick={this.login.bind(this)} bsSize="large"
-                //disabled={!validateForm()} 
-                type="submit">
-                Login
-      </Button>
-            </div>
-          </div>
-        </Alert>
-      </div>
-    );
   }
 
   renderStudent = () => {
@@ -537,6 +507,7 @@ export default class App extends React.Component {
               <div className="choices_items"><button value="2" type="button" className="btn btn-primary ml-2" onClick={() => this.sendnewMessage(2)}>Chọn C</button> <span className="ml-3">{questions[route].chooses[2]}</span></div>
               <div className="choices_items"><button value="2" type="button" className="btn btn-primary ml-2" onClick={() => this.sendnewMessage(3)}>Chọn D</button> <span className="ml-3">{questions[route].chooses[3]}</span></div>
               <div className="timer">
+                <Timer />
                 Việc thay đổi đáp án sẽ khiến cho thời gian thay đổi
               </div>
             </React.Fragment>
@@ -583,7 +554,7 @@ export default class App extends React.Component {
                   <div className="choices_items"><div className="d-cricle">C</div> {questions[route].chooses[2]}</div>
                   <div className="choices_items"><div className="d-cricle">D</div> {questions[route].chooses[3]}</div>
                   <div className="timer">
-                    {this.state.time.m} : {this.state.time.s}
+                    <Timer />
                   </div>
                 </React.Fragment>
               ) : (
