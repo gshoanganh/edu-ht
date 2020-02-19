@@ -5,9 +5,8 @@ import $ from 'jquery';
 import _map from 'lodash/map';
 import io from 'socket.io-client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Nav from 'react-bootstrap/Nav';
 //import Table from 'react-bootstrap/Table';
-import { Button, FormGroup, FormControl, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import moment from 'moment';
 
 import './home.css';
@@ -317,7 +316,7 @@ export default class App extends React.Component {
 
   render() {
     var { route, opens } = this.state;
-    var show = opens && opens[route] && this.getOpen();
+    //var show = opens && opens[route] && this.getOpen();
     console.log('this.state.user.name<: ', this.state.user)
     var isTeacher = this.state.user && this.state.user.name === 'Admin';
     return (
@@ -357,7 +356,7 @@ export default class App extends React.Component {
 
   renderList = () => {
     var { opens, route } = this.state;
-    opens = opens.filter(t => t.route == route);
+    opens = opens.filter(t => t.route === route);
     if (opens && opens.length > 0) {
       opens = opens[0];
     }
@@ -373,9 +372,9 @@ export default class App extends React.Component {
     }
     console.log('danh sach: ', list, this.state)
     return <div className="student">
-      <div className="row">{this.getTab()==0?"Đã tham gia:":"Trả lời đúng: "} {this.getTab() === 2 ?
+      <div className="row">{this.getTab() === 0 ? "Đã tham gia:" : "Trả lời đúng: "} {this.getTab() === 2 ?
         this.state.userOnline.length : ((list) ? list.length : 0)}
-        {this.getTab() == 2 && <button onClick={() => this.refreshList()}>Refresh</button>}</div>
+        {this.getTab() === 2 && <button onClick={() => this.refreshList()}>Refresh</button>}</div>
       <table>
         {/* <thead>
           <tr>
@@ -387,10 +386,10 @@ export default class App extends React.Component {
         </thead> */}
         <tbody>
 
-          {(this.getTab() == 2) && this.state.userOnline.map((item, index) => {
+          {(this.getTab() === 2) && this.state.userOnline.map((item, index) => {
             return (<tr key={index}>
               <td className="w-20"><div className="t-cricle">{index + 1}</div></td>
-              <td><div className="t-cricle-name1 ml-2">{(item.name == 'Admin' || item.name == 'admin') ? 'Giáo viên' : item.name}</div></td>
+              <td><div className="t-cricle-name1 ml-2">{(item.name === 'Admin' || item.name === 'admin') ? 'Giáo viên' : item.name}</div></td>
               <td><div className="t-cricle-other">{item.time && item.time.substring(0, 8)}</div></td>
             </tr>)
           })}
@@ -486,7 +485,7 @@ export default class App extends React.Component {
     if (show) {
       answered = (opens[route].answers);
       if (answered && answered.length > 0) {
-        var findIndex = answered.findIndex(t => t.userId == this.state.user.id);
+        var findIndex = answered.findIndex(t => t.userId === this.state.user.id);
         if (findIndex >= 0) {
           answered = this.getAnswers(answered[findIndex].message);
         }
