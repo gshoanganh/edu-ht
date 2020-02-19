@@ -439,6 +439,7 @@ export default class App extends React.Component {
           }
         </tbody>
       </table>
+      <small>Nếu có hs đăng nhập sau thì click tab "trả lời"</small>
       {/* {this.state.userOnline.map(item =>
         <li key={item.id}><span>{item.name}</span></li>
       )} */}
