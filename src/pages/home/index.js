@@ -327,7 +327,7 @@ export default class App extends React.Component {
       if (opens && opens.length > 0) {
         opens.map((item, index) => {
           var dapan = this.getAnswers(item.message);
-          data += `${index + 1}. ${item.userName} <code: ${item.code}> (${dapan}) - time: ${item.time}\n`;
+          data += `${index + 1}. ${item.userName} <code: ${item.code}> (${dapan}) - time: ${item.time}\r\n`;
         })
       }
     }
@@ -335,9 +335,9 @@ export default class App extends React.Component {
       alert("Không có dữ liệu ghi!");
       return null;
     }
-    var title = "\n             DANH SÁCH HỌC SINH (CÂU HỎI " + route + ")\n"
-    data = title + "           (Thời gian bắt đầu: " + timeStart + ")\n\n" + data;
-    data += "\n \nDanh sách trên sắp xếp theo tiêu chí: Đúng và nhanh nhất.";
+    var title = "\n             DANH SÁCH HỌC SINH (CÂU HỎI " + route + ")\r\n"
+    data = title + "           (Thời gian bắt đầu: " + timeStart + ")\r\n\r\n" + data;
+    data += "\r\n \r\nDanh sách trên sắp xếp theo tiêu chí: Đúng và nhanh nhất.";
     let script = document.createElement('a');
     script.href = "data:application/octet-stream," + encodeURIComponent(data);
     script.download = `BangXepHang-Cau-Hoi-${route}.txt`;
