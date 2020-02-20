@@ -325,10 +325,14 @@ export default class App extends React.Component {
       timeStart = opens.timeStart;
       opens = opens.answers;
       if (opens && opens.length > 0) {
-        opens.map((item, index) => {
-          var dapan = this.getAnswers(item.message);
-          data += `${index + 1}. ${item.userName} <code: ${item.code}> (${dapan}) - time: ${item.time}\r\n`;
-        })
+        var answer = questions[route - 1].answer;
+        var list = list.filter(t => (answer - 1) === t.message);
+        if (list && list.length > 0) {
+          list.map((item, index) => {
+            var dapan = this.getAnswers(item.message);
+            data += `${index + 1}. ${item.userName} <code: ${item.code}> (${dapan}) - time: ${item.time}\r\n`;
+          })
+        }
       }
     }
     if (!data) {
