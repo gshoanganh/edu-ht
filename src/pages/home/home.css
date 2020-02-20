@@ -1,6 +1,9 @@
 * {
     box-sizing: border-box;
   }
+  .cursor{
+    cursor: pointer;
+  }
   
   body {
     background-color: #edeff2;

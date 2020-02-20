@@ -33,7 +33,7 @@ export default class App extends React.Component {
       route: 0,
       opens: [],//[{ route: 0, tab:0, timeStart: '', value: false, answers: [] }], //answers: câu trả lời 
       //timer 
-      timer: 5
+      timer: 15
     }
     this.socket = null;
     //Timer  
@@ -255,6 +255,7 @@ export default class App extends React.Component {
       userId: m.user.id,
       message: m.data,
       userName: m.user.name,
+      code: m.user.code,
       date: this.getDateCurrent(),
       time: this.getHourMinute()
     };
@@ -312,6 +313,35 @@ export default class App extends React.Component {
 
   refreshList = () => {
     this.socket.emit("refreshList", true); //Làm mới lại toàn bộ danh sách
+  }
+
+  //xuất ds ra file 
+  exportStudent = () => {
+    var route = this.state.route + 1;
+    var opens = this.state.opens[route - 1];
+    var timeStart = "";
+    var data = "";
+    if (opens) {
+      timeStart = opens.timeStart;
+      opens = opens.answers;
+      if (opens && opens.length > 0) {
+        opens.map((item, index) => {
+          var dapan = this.getAnswers(item.message);
+          data += `${index + 1}. ${item.userName} <code: ${item.code}> (${dapan}) - time: ${item.time}\n`;
+        })
+      }
+    }
+    if (!data) {
+      alert("Không có dữ liệu ghi!");
+      return null;
+    }
+    var title = "\n             DANH SÁCH HỌC SINH (CÂU HỎI " + route + ")\n"
+    data = title + "           (Thời gian bắt đầu: " + timeStart + ")\n\n" + data;
+    data += "\n \nDanh sách trên sắp xếp theo tiêu chí: Đúng và nhanh nhất.";
+    let script = document.createElement('a');
+    script.href = "data:application/octet-stream," + encodeURIComponent(data);
+    script.download = `BangXepHang-Cau-Hoi-${route}.txt`;
+    script.click();
   }
 
   render() {
@@ -372,9 +402,11 @@ export default class App extends React.Component {
     }
     console.log('danh sach: ', list, this.state)
     return <div className="student">
-      <div className="row">{this.getTab() === 0 ? "Đã tham gia:" : "Trả lời đúng: "} {this.getTab() === 2 ?
+      <div className="clearfix">{this.getTab() === 1 ? "Ds đúng: " : "Đã tham gia:"} {this.getTab() === 2 ?
         this.state.userOnline.length : ((list) ? list.length : 0)}
-        {this.getTab() === 2 && <button onClick={() => this.refreshList()}>Refresh</button>}</div>
+        {this.getTab() === 2 && <button onClick={() => this.refreshList()}>Refresh</button>}
+        {this.getTab() === 1 && <span className="text-success ml-2 cursor" onClick={() => this.exportStudent()}>{"(Tải dánh sách)"}</span>}
+      </div>
       <table>
         {/* <thead>
           <tr>
@@ -438,7 +470,7 @@ export default class App extends React.Component {
           }
         </tbody>
       </table>
-      <small>Nếu có hs đăng nhập sau thì click tab "trả lời"</small>
+      {/* <small>Nếu có hs đăng nhập sau thì click tab "trả lời"</small> */}
       {/* {this.state.userOnline.map(item =>
         <li key={item.id}><span>{item.name}</span></li>
       )} */}

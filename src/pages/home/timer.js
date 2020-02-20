@@ -4,7 +4,7 @@ import React from 'react';
 class Timer extends React.Component {
     constructor() {
       super();
-      this.state = { time: {}, seconds: 5 };
+      this.state = { time: {}, seconds: 15 };
       this.timer = 0;
       this.startTimer = this.startTimer.bind(this);
       this.countDown = this.countDown.bind(this);
