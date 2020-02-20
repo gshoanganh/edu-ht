@@ -326,7 +326,7 @@ export default class App extends React.Component {
       opens = opens.answers;
       if (opens && opens.length > 0) {
         var answer = questions[route - 1].answer;
-        var list = list.filter(t => (answer - 1) === t.message);
+        var list = opens.filter(t => (answer - 1) === t.message);
         if (list && list.length > 0) {
           list.map((item, index) => {
             var dapan = this.getAnswers(item.message);
