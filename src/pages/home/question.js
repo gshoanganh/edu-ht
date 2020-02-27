@@ -1,12 +1,12 @@
 
 var questions = [
     {
-        name: 'Tình cảm, cảm xúc nào không được thể hiện trong bài thơ “Thuật hoài”?',
+        name: 'Trong những nhận xét sau đây, nhận xét nào không đúng về câu thơ thứ hai trong bài "Thuật hoài"?',
         chooses: [
-            'Tự hào về khí thế và sức manh của quân đội thời trần.',
-            'Thẹn vì chưa trả xong nợ công danh.',
-            'Tình yêu nước, tự hào dân tộc.',
-            'Phê phán triều đình phong kiến.'
+            'Tam quân là ba người lính, đồng thời cũng có thể hiểu là ba đạo quân.',
+            'Hình ảnh ba quân thể hiện sức mạnh của toàn dân tộc.',
+            'Câu thơ gây ấn tượng mạnh bởi sự kết hợp của hình ảnh khách quan và cảm nhận chủ quan.',
+            'Hình ảnh thơ kết hợp giữa hiện thực và lãng mạn.'
         ],
         answer: 4
     },
