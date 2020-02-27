@@ -1,4 +1,3 @@
-
 var questions = [
     {
         name: 'Trong những nhận xét sau đây, nhận xét nào không đúng về câu thơ thứ hai trong bài "Thuật hoài"?',
@@ -43,6 +42,7 @@ var questions = [
 ]
 
 export {questions};
+
 
 var questions1 = [
     {
@@ -96,5 +96,4 @@ var questions1 = [
         answer: 4
     }
 ]
-
-export {questions};
+ 
