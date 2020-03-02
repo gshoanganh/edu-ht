@@ -375,10 +375,10 @@ export default class App extends React.Component {
         var c2 = this.getAnswers(item.c2);
         var c3 = this.getAnswers(item.c3);
         var c4 = this.getAnswers(item.c4);
-        if (typeof(c1) == 'undefined') { c1 = ' ' };
-        if (typeof(c2) == 'undefined') { c2 = ' ' };
-        if (typeof(c3) == 'undefined') { c3 = ' ' };
-        if (typeof(c4) == 'undefined') { c4 = ' ' };
+        if (typeof (c1) == 'undefined') { c1 = ' ' };
+        if (typeof (c2) == 'undefined') { c2 = ' ' };
+        if (typeof (c3) == 'undefined') { c3 = ' ' };
+        if (typeof (c4) == 'undefined') { c4 = ' ' };
         data += `${index + 1}. ${item.userName} <code: ${item.code}> ${c1}, ${c2}, ${c3}, ${c4} - time: ${item.secondAvg}:${item.milliAvg}\r\n`;
       })
     }
@@ -417,18 +417,21 @@ export default class App extends React.Component {
           </div>
 
         }
-        <Button
-          // onMouseOver={() => this.showTooltip(true)}
-          // onMouseLeave={() => this.showTooltip(false)}
-          onClick={() => this.setState({ showBox: !this.state.showBox })}
-          className={"btn-circle plus-bxh"}>+A-z
+        {
+          isTeacher && (<Button
+            // onMouseOver={() => this.showTooltip(true)}
+            // onMouseLeave={() => this.showTooltip(false)}
+            onClick={() => this.setState({ showBox: !this.state.showBox })}
+            className={"btn-circle plus-bxh"}>+A-z
                <Tooltip show={this.state.showBox} position={'left'}
-            color={'#000'}
-            textBoxWidth={'400px'}>
-            {this.renderBXHFinal()}
+              color={'#000'}
+              textBoxWidth={'400px'}>
+              {this.renderBXHFinal()}
 
-          </Tooltip>
-        </Button>
+            </Tooltip>
+          </Button>)
+        }
+
 
         <div className="footer">(c) Copyright Gs Hoang Anh - facebook.com/gs.anhhoang</div>
       </div>
@@ -457,7 +460,7 @@ export default class App extends React.Component {
         </tr>
         {
           (list && list.length > 0) && list.map((item, index) => {
-            return (<tr key={index}>
+            return (<tr key={index} className={index == 0 ? "text-primary" : (index == 1 ? "text-success" : (index == 2 ? "text-info" : ""))}>
               <td>{index + 1}</td>
               <td style={{ paddingRight: "10px" }}>{item.userName}</td>
               <td>{this.getAnswers(item.c1)}</td>
