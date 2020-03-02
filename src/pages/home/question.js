@@ -27,7 +27,7 @@ var questions = [
             'Quý hồ tinh bất quý hồ đa.',
             'Kể chuyện.'
         ],
-        answer: 2
+        answer: 3
     },
     {
         name: 'Cảm hứng yêu nước được thể hiện qua những tác phẩm nào sau đây?',

@@ -9,6 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from "react-bootstrap";
 import moment from 'moment';
 
+import Tooltip from "react-power-tooltip";
+
 import './home.css';
 import './client.css'
 import '../../lib/extensions';
@@ -32,8 +34,9 @@ export default class App extends React.Component {
       userOnline: [], // danh sách người dùng đang online
       route: 0,
       opens: [],//[{ route: 0, tab:0, timeStart: '', value: false, answers: [] }], //answers: câu trả lời 
+      showBox: false,
       //timer 
-      timer: 15
+      timer: 15,
     }
     this.socket = null;
     //Timer  
@@ -303,6 +306,8 @@ export default class App extends React.Component {
     }
     var time = this.getHourMinute();
     this.socket.emit("login", { user, code, time });
+    //khoi tao route = 0
+    this.socket.emit("teacherQuestion", { route: 0 });
   }
 
   //gui cau hoi hien tai dang mo
@@ -321,18 +326,30 @@ export default class App extends React.Component {
     var opens = this.state.opens[route - 1];
     var timeStart = "";
     var data = "";
+    var incorrect = "";
     if (opens) {
       timeStart = opens.timeStart;
       opens = opens.answers;
       if (opens && opens.length > 0) {
         var answer = questions[route - 1].answer;
         var list = opens.filter(t => (answer - 1) === t.message);
+        var listIncorrect = opens.filter(t => (answer - 1) !== t.message);
+
         if (list && list.length > 0) {
           list.map((item, index) => {
             var dapan = this.getAnswers(item.message);
             data += `${index + 1}. ${item.userName} <code: ${item.code}> (${dapan}) - time: ${item.time}\r\n`;
           })
         }
+
+        //incorrect
+        if (listIncorrect && listIncorrect.length > 0) {
+          listIncorrect.map((item, index) => {
+            var dapan = this.getAnswers(item.message);
+            incorrect += `${index + 1}. ${item.userName} <code: ${item.code}> (${dapan}) - time: ${item.time}\r\n`;
+          })
+        }
+
       }
     }
     if (!data) {
@@ -342,9 +359,39 @@ export default class App extends React.Component {
     var title = "\n             DANH SÁCH HỌC SINH (CÂU HỎI " + route + ")\r\n"
     data = title + "           (Thời gian bắt đầu: " + timeStart + ")\r\n\r\n" + data;
     data += "\r\n \r\nDanh sách trên sắp xếp theo tiêu chí: Đúng và nhanh nhất.";
+    data += "\r\n \r\nDANH SACH HS SAI\r\n \r\n" + incorrect;
     let script = document.createElement('a');
     script.href = "data:application/octet-stream," + encodeURIComponent(data);
     script.download = `BangXepHang-Cau-Hoi-${route}.txt`;
+    script.click();
+  }
+
+  //xuất ds ra file tat ca cau tra loi
+  exportStudentFinal = (list) => {
+    var data = "";
+    if (list && list.length > 0) {
+      list.map((item, index) => {
+        var c1 = this.getAnswers(item.c1);
+        var c2 = this.getAnswers(item.c2);
+        var c3 = this.getAnswers(item.c3);
+        var c4 = this.getAnswers(item.c4);
+        if (typeof(c1) == 'undefined') { c1 = ' ' };
+        if (typeof(c2) == 'undefined') { c2 = ' ' };
+        if (typeof(c3) == 'undefined') { c3 = ' ' };
+        if (typeof(c4) == 'undefined') { c4 = ' ' };
+        data += `${index + 1}. ${item.userName} <code: ${item.code}> ${c1}, ${c2}, ${c3}, ${c4} - time: ${item.secondAvg}:${item.milliAvg}\r\n`;
+      })
+    }
+
+    if (!data) {
+      alert("Không có dữ liệu ghi!");
+      return null;
+    }
+    var title = "\n             DANH SÁCH HỌC SINH TỔNG HỢP\r\n\r\n";
+    data += "\r\n \r\nDanh sách trên sắp xếp theo tiêu chí: Đúng và nhanh nhất.";
+    let script = document.createElement('a');
+    script.href = "data:application/octet-stream," + encodeURIComponent(data);
+    script.download = `BangXepHangAll.txt`;
     script.click();
   }
 
@@ -370,9 +417,61 @@ export default class App extends React.Component {
           </div>
 
         }
+        <Button
+          // onMouseOver={() => this.showTooltip(true)}
+          // onMouseLeave={() => this.showTooltip(false)}
+          onClick={() => this.setState({ showBox: !this.state.showBox })}
+          className={"btn-circle plus-bxh"}>+A-z
+               <Tooltip show={this.state.showBox} position={'left'}
+            color={'#000'}
+            textBoxWidth={'400px'}>
+            {this.renderBXHFinal()}
+
+          </Tooltip>
+        </Button>
+
         <div className="footer">(c) Copyright Gs Hoang Anh - facebook.com/gs.anhhoang</div>
       </div>
     )
+  }
+
+  showTooltip = bool => {
+    this.setState({ showBox: bool })
+  }
+  renderBXHFinal = () => {
+    var list = BXHFinal(this.state.opens);
+    console.log('--------------')
+    console.log('BXH: ', list);
+    return (<div>
+      <h5 className="text-center">{'BXH THÀNH TÍCH'}</h5>
+      <table>
+        <tr>
+          <th>#</th>
+          <th style={{ paddingRight: "10px" }}>HỌ TÊN</th>
+          <th>C1</th>
+          <th>C2</th>
+          <th>C3</th>
+          <th>C4</th>
+          <th style={{ padding: "10px" }}>ĐÚNG</th>
+          <th style={{ padding: "10px" }}>TRUNG BÌNH/1C (s)</th>
+        </tr>
+        {
+          (list && list.length > 0) && list.map((item, index) => {
+            return (<tr key={index}>
+              <td>{index + 1}</td>
+              <td style={{ paddingRight: "10px" }}>{item.userName}</td>
+              <td>{this.getAnswers(item.c1)}</td>
+              <td>{this.getAnswers(item.c2)}</td>
+              <td>{this.getAnswers(item.c3)}</td>
+              <td>{this.getAnswers(item.c4)}</td>
+              <td className="text-center">{(item.countCorrect)}</td>
+              <td className="text-center">{`${item.secondAvg}:${item.milliAvg}`}</td>
+            </tr>)
+          })
+        }
+
+      </table>
+      {(list && list.length > 0) && <span className="text-success ml-2 cursor" onClick={() => this.exportStudentFinal(list)}>{"(Tải danh sách)"}</span>}</div>)
   }
 
   getAnswers = (value) => {
@@ -409,7 +508,7 @@ export default class App extends React.Component {
       <div className="clearfix">{this.getTab() === 1 ? "Ds đúng: " : "Đã tham gia:"} {this.getTab() === 2 ?
         this.state.userOnline.length : ((list) ? list.length : 0)}
         {this.getTab() === 2 && <button onClick={() => this.refreshList()}>Refresh</button>}
-        {this.getTab() === 1 && <span className="text-success ml-2 cursor" onClick={() => this.exportStudent()}>{"(Tải dánh sách)"}</span>}
+        {this.getTab() === 1 && <span className="text-success ml-2 cursor" onClick={() => this.exportStudent()}>{"(Tải danh sách)"}</span>}
       </div>
       <table>
         {/* <thead>
@@ -520,11 +619,13 @@ export default class App extends React.Component {
     var answered = null;
     if (show) {
       answered = (opens[route].answers);
+      //console.log('ban da chon dap an la: ',answered,this.state.user)
       if (answered && answered.length > 0) {
         var findIndex = answered.findIndex(t => t.userId === this.state.user.id);
         if (findIndex >= 0) {
           answered = this.getAnswers(answered[findIndex].message);
         }
+        else { answered = null; }
       }
       else { answered = null; }
     }
@@ -655,4 +756,141 @@ export default class App extends React.Component {
     </div>
     )
   }
+}
+
+function BXHFinal(list) {
+  var finals = [];//id, userId, ho ten, c1, c2, c3, c4, countCorrect, timeAVG, code
+  list.map((item, route) => {
+    var answers = item.answers;
+    if (answers && answers.length > 0) {
+      answers.map((user, index) => {
+
+        //check cau tra loi dung/sai
+        var countCorrect = 0;
+        var question = questions[item.route];
+        if (question && (question.answer - 1) == user.message) {
+          countCorrect = 1;
+        }
+        //xu ly thoi gian
+        let valuestart = moment.duration(item.timeStart, "HH:mm:ss.SSSS");
+        let valuestop = moment.duration(user.time, "HH:mm:ss.SSSS");
+        let difference = valuestop.subtract(valuestart);
+
+        var finalTime = (difference.seconds() + ":" + difference.milliseconds())
+        console.log('final time: ', finalTime)
+
+        //kiem tra xem co trong danh sach chua, co roi thi so sanh, chua co them moi
+        var findIndex = finals.findIndex(t => t.userId == user.userId);
+        if (findIndex >= 0) {
+          //Cộng số câu đúng từ câu cũ 
+          countCorrect += finals[findIndex].countCorrect;
+
+          switch (item.route) {
+            case 0:
+              finals[findIndex] = { ...finals[findIndex], c1: user.message, time1: finalTime, countCorrect };
+              break;
+            case 1:
+              finals[findIndex] = { ...finals[findIndex], c2: user.message, time2: finalTime, countCorrect };
+              break;
+            case 2:
+              finals[findIndex] = { ...finals[findIndex], c3: user.message, time3: finalTime, countCorrect };
+              break;
+            case 3:
+              finals[findIndex] = { ...finals[findIndex], c4: user.message, time4: finalTime, countCorrect };
+              break;
+          }
+        }
+        else {
+          switch (item.route) {
+            case 0:
+              finals.push({
+                id: finals.length + 1,
+                userId: user.userId,
+                userName: user.userName,
+                c1: user.message, c2: '', c3: '', c4: '',
+                countCorrect,
+                time1: finalTime, time2: 0, time3: 0, time4: 0,
+                code: user.code
+              });
+              break;
+            case 1:
+              finals.push({
+                id: finals.length + 1,
+                userId: user.userId,
+                userName: user.userName,
+                c1: '', c2: user.message, c3: '', c4: '',
+                countCorrect,
+                time1: 0, time2: finalTime, time3: 0, time4: 0,
+                code: user.code
+              });
+              break;
+            case 2:
+              finals.push({
+                id: finals.length + 1,
+                userId: user.userId,
+                userName: user.userName,
+                c1: '', c2: '', c3: user.message, c4: '',
+                countCorrect,
+                time1: 0, time2: 0, time3: finalTime, time4: 0,
+                code: user.code
+              });
+              break;
+            case 3:
+              finals.push({
+                id: finals.length + 1,
+                userId: user.userId,
+                userName: user.userName,
+                c1: '', c2: '', c3: '', c4: user.message,
+                countCorrect,
+                time1: 0, time2: 0, time3: 0, time4: finalTime,
+                code: user.code
+              });
+              break;
+          }
+        }
+      })
+    }
+  })
+  if (finals) {
+    //#time AVG
+    finals.map((item, index) => {
+      var countAnswer = 0; //so cau tham gia tra loi
+      //thoi gian
+      var second = 0;
+      var milli = 0;
+      //c1
+      if (item.time1 && item.time1.split(':') && item.time1.split(':').length > 0) {
+        second += parseInt(item.time1.split(':')[0]);
+        milli += parseInt(item.time1.split(':')[1]);
+        countAnswer++;
+      }
+      //c2
+      if (item.time2 && item.time2.split(':') && item.time2.split(':').length > 0) {
+        second += parseInt(item.time2.split(':')[0]);
+        milli += parseInt(item.time2.split(':')[1]);
+        countAnswer++;
+      }
+      //c3
+      if (item.time3 && item.time3.split(':') && item.time3.split(':').length > 0) {
+        second += parseInt(item.time3.split(':')[0]);
+        milli += parseInt(item.time3.split(':')[1]);
+        countAnswer++;
+      }
+      //c4
+      if (item.time4 && item.time4.split(':') && item.time4.split(':').length > 0) {
+        second += parseInt(item.time4.split(':')[0]);
+        milli += parseInt(item.time4.split(':')[1]);
+        countAnswer++;
+      }
+      if (countAnswer == 0) { countAnswer = 1 }
+      var secondAvg = Math.round((second / countAnswer) * 1000) / 1000;
+      var milliAvg = Math.round((milli / countAnswer) * 1000) / 1000;
+      finals[index] = { ...finals[index], second, milli, repCount: countAnswer, secondAvg, milliAvg };
+    });
+    //#sort: time -> answer (uu tien dung truoc)
+    finals = finals.sort(function (a, b) { return a.milliAvg - b.milliAvg; });
+    finals = finals.sort(function (a, b) { return a.secondAvg - b.secondAvg; });
+    finals = finals.sort(function (a, b) { return b.countCorrect - a.countCorrect; });
+  }
+  return finals;
 }
