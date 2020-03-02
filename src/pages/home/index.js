@@ -398,7 +398,7 @@ export default class App extends React.Component {
   render() {
     var { route, opens } = this.state;
     //var show = opens && opens[route] && this.getOpen();
-    console.log('this.state.user.name<: ', this.state.user)
+    //console.log('this.state.user.name<: ', this.state.user)
     var isTeacher = this.state.user && this.state.user.name === 'Admin';
     return (
       <div className="app__content">
@@ -427,7 +427,6 @@ export default class App extends React.Component {
               color={'#000'}
               textBoxWidth={'400px'}>
               {this.renderBXHFinal()}
-
             </Tooltip>
           </Button>)
         }
