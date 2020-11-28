@@ -1,6 +1,6 @@
 var questions = [
     {
-        name: 'Trong những nhận xét sau đây, nhận xét nào không đúng về câu thơ thứ hai trong bài "Thuật hoài"?',
+        name: 'Trong những nhận xét sau đây, nhận xét nào không đúng về câu thơ thứ hai trong bài "Thuật hoài"?.',
         chooses: [
             'Tam quân là ba người lính, đồng thời cũng có thể hiểu là ba đạo quân.',
             'Hình ảnh ba quân thể hiện sức mạnh của toàn dân tộc.',
