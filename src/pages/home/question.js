@@ -1,11 +1,11 @@
 var questions = [
     {
-        name: 'Trong những nhận xét sau đây, nhận xét nào không đúng về câu thơ thứ hai trong bài "Thuật hoài"?',
+        name: 'Trong những nhận xét sau đây, nhận xét nào không đúng về vẻ đẹp của bài thơ "Thuật hoài"?',
         chooses: [
-            'Tam quân là ba người lính, đồng thời cũng có thể hiểu là ba đạo quân.',
-            'Hình ảnh ba quân thể hiện sức mạnh của toàn dân tộc.',
-            'Câu thơ gây ấn tượng mạnh bởi sự kết hợp của hình ảnh khách quan và cảm nhận chủ quan.',
-            'Hình ảnh thơ kết hợp giữa hiện thực và lãng mạn.'
+            'Vẻ đẹp của ba người lính.',
+            'Vẻ đẹp của con người kì vĩ.',
+            'Vẻ đẹp của thời gian kì vĩ.',
+            'Vẻ đẹp của không gian kì vĩ.'
         ],
         answer: 1
     }, 
@@ -14,7 +14,7 @@ var questions = [
         chooses: [
             'Tự hào về khí thế và sức mạnh của quân đội thời Trần.',
             'Thẹn vì chưa trả xong nợ công danh.',
-            'Tình yêu nước, tự hào dân tộc.',
+            'Lòng yêu nước, tự hào dân tộc.',
             'Phê phán triều đình phong kiến.'
         ],
         answer: 4
@@ -22,20 +22,20 @@ var questions = [
     {
         name: 'Đặc sắc nghệ thuật trong bài thơ “Thuật hoài” là gì?',
         chooses: [
-            'Nhân hoá.',
-            'Ẩn dụ.',
+            'Liệt kê.',
             'Quý hồ tinh bất quý hồ đa.',
+            'So sánh.',
             'Kể chuyện.'
         ],
-        answer: 3
+        answer: 2
     },
     {
-        name: 'Cảm hứng yêu nước được thể hiện qua những tác phẩm nào sau đây?',
+        name: 'Cảm hứng yêu nước mang âm hưởng Hào khí Đông A được thể hiện trong những tác phẩm nào sau đây?',
         chooses: [
             'Nam quốc sơn hà, Thuật hoài, Truyện Kiều.',
             'Nhàn, Bình Ngô đại cáo, Thuật hoài.',
-            'Thuật hoài, Nam quốc sơn hà, Chiếu dời đô.',
-            'Thuật hoài, Nam quốc sơn hà, Độc Tiểu Thanh kí.'
+            'Thuật hoài, Hich tướng sĩ, Tụng giá hoàn kinh sư.',
+            'Thuật hoài, Hich tướng sĩ, Độc Tiểu Thanh kí.'
         ],
         answer: 3
     }
