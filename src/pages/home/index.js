@@ -1,5 +1,5 @@
 import React from 'react';
-import $ from 'jquery';
+//import $ from 'jquery';
 //import Messages from './message-list';
 //import Input from './input';
 import _map from 'lodash/map';
