@@ -432,7 +432,7 @@ export default class App extends React.Component {
         }
 
 
-        <div className="footer">(c) Copyright Gs Hoang Anh - <a href="https://www.faceboo.com/gs.anhhoang" target="_blank">facebook.com/gs.anhhoang</a></div>
+        <div className="footer">(c) Copyright Gs Hoang Anh - <a href="https://www.facebook.com/gs.anhhoang" target="_blank">facebook.com/gs.anhhoang</a></div>
       </div>
     )
   }
